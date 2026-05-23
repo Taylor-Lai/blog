@@ -55,7 +55,6 @@ export default function HomePage() {
                 <span className="chip">Git 同步</span>
               </div>
             </div>
-            <Link href={`/${module.key}`} className="post-cover" aria-label={`进入${module.name}`} />
             <Link href={`/${module.key}`} className="post-enter" aria-label={`进入${module.name}`}>›</Link>
           </article>
         ))}

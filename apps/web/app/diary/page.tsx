@@ -53,7 +53,6 @@ export default function DiaryPage() {
                 {item.tags.map((tag) => <span className="tag" key={tag}># {tag}</span>)}
               </div>
             </div>
-            <Link href={`/diary/${item.slug}`} className="post-cover" aria-label={item.date} />
             <Link href={`/diary/${item.slug}`} className="post-enter" aria-label={item.date}>›</Link>
           </article>
         ))}

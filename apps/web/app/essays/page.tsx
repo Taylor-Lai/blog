@@ -53,7 +53,6 @@ export default function EssaysPage() {
                 {item.tags.map((tag) => <span className="tag" key={tag}># {tag}</span>)}
               </div>
             </div>
-            <Link href={`/essays/${item.slug}`} className="post-cover" aria-label={item.title || item.date} />
             <Link href={`/essays/${item.slug}`} className="post-enter" aria-label={item.title || item.date}>›</Link>
           </article>
         ))}
