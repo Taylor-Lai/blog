@@ -32,9 +32,11 @@ services:
       GIT_BRANCH: ${GIT_BRANCH:-main}
       GIT_AUTHOR_NAME: ${GIT_AUTHOR_NAME:-Blog Bot}
       GIT_AUTHOR_EMAIL: ${GIT_AUTHOR_EMAIL:-blog@example.com}
+      GIT_SSH_COMMAND: ssh -i /tmp/blog_ssh/id_ed25519 -o UserKnownHostsFile=/tmp/blog_ssh/known_hosts -o StrictHostKeyChecking=yes
       PYTHONPATH: /repo/apps/api
     volumes:
       - ./:/repo
+      - ${SSH_DIR:-${USERPROFILE}/.ssh}:/host_ssh:ro
     working_dir: /repo
     depends_on:
       db:
