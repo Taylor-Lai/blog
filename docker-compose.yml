@@ -1,0 +1,66 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: blog
+      POSTGRES_USER: blog
+      POSTGRES_PASSWORD: blog
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U blog -d blog"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./apps/api
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      SITE_TITLE: ${SITE_TITLE:-Private Journal}
+      BLOG_SECRET_KEY: ${BLOG_SECRET_KEY:-change-me-in-production}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin123}
+      DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg://blog:blog@db:5432/blog}
+      CONTENT_DIR: ${CONTENT_DIR:-/repo/content}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://localhost:8080}
+      GIT_AUTO_PUSH: ${GIT_AUTO_PUSH:-false}
+      GIT_REMOTE: ${GIT_REMOTE:-origin}
+      GIT_BRANCH: ${GIT_BRANCH:-main}
+      GIT_AUTHOR_NAME: ${GIT_AUTHOR_NAME:-Blog Bot}
+      GIT_AUTHOR_EMAIL: ${GIT_AUTHOR_EMAIL:-blog@example.com}
+      PYTHONPATH: /repo/apps/api
+    volumes:
+      - ./:/repo
+    working_dir: /repo
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+  web:
+    build:
+      context: ./apps/web
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: ${NEXT_PUBLIC_API_BASE_URL:-http://localhost:8000}
+    depends_on:
+      - api
+    ports:
+      - "3000:3000"
+
+  nginx:
+    image: nginx:1.27-alpine
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - web
+      - api
+    ports:
+      - "8080:80"
+
+volumes:
+  postgres_data:
