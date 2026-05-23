@@ -43,7 +43,7 @@ export default function EssaysPage() {
         {items.map((item) => (
           <article className="card-base post-card" key={item.slug}>
             <div className="post-card-body">
-              <Link className="post-title" href={`/essays/${item.slug}`}>{item.title}</Link>
+              <h2 className="post-title">{item.title}</h2>
               <div className="post-meta">
                 <span>随笔</span>
                 <span>{item.date}</span>

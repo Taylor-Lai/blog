@@ -42,9 +42,7 @@ export default function HomePage() {
         {modules.map((module) => (
           <article className="card-base post-card" key={module.key}>
             <div className="post-card-body">
-              <Link href={`/${module.key}`} className="post-title">
-                {module.name}
-              </Link>
+              <h2 className="post-title">{module.name}</h2>
               <div className="post-meta">
                 <span>Private</span>
                 <span>{module.key === "diary" ? "按日期归档" : "标题与日期"}</span>

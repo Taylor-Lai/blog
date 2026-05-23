@@ -291,25 +291,20 @@ button {
 
 .banner-image {
   object-fit: cover;
-  animation: bannerKenBurns 16s ease-out infinite alternate;
+  opacity: 0;
+  animation: bannerFade 32s linear infinite, bannerKenBurns 8s ease-out infinite alternate;
 }
 
 .banner-image-b {
-  opacity: 0;
-  animation: bannerCrossfade 28s ease-in-out infinite, bannerKenBurns 28s ease-out infinite alternate;
-}
-
-.banner-image-c,
-.banner-image-d {
-  opacity: 0;
+  animation-delay: 8s, 0s;
 }
 
 .banner-image-c {
-  animation: bannerCrossfadeC 28s ease-in-out infinite, bannerKenBurns 28s ease-out infinite alternate;
+  animation-delay: 16s, 0s;
 }
 
 .banner-image-d {
-  animation: bannerCrossfadeD 28s ease-in-out infinite, bannerKenBurns 28s ease-out infinite alternate;
+  animation-delay: 24s, 0s;
 }
 
 .banner-text-overlay {
@@ -638,10 +633,6 @@ button {
   color: rgba(255, 255, 255, 0.92);
 }
 
-.post-title:hover {
-  color: var(--primary);
-}
-
 .post-meta {
   display: flex;
   flex-wrap: wrap;
@@ -836,36 +827,15 @@ button {
   }
 }
 
-@keyframes bannerCrossfade {
-  0%, 22% {
-    opacity: 0;
-  }
-  27%, 45% {
+@keyframes bannerFade {
+  0% {
     opacity: 1;
   }
-  50%, 100% {
-    opacity: 0;
-  }
-}
-
-@keyframes bannerCrossfadeC {
-  0%, 47% {
-    opacity: 0;
-  }
-  52%, 70% {
+  23% {
     opacity: 1;
   }
-  75%, 100% {
+  25% {
     opacity: 0;
-  }
-}
-
-@keyframes bannerCrossfadeD {
-  0%, 72% {
-    opacity: 0;
-  }
-  77%, 94% {
-    opacity: 1;
   }
   100% {
     opacity: 0;

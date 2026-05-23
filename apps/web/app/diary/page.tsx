@@ -43,7 +43,7 @@ export default function DiaryPage() {
         {items.map((item) => (
           <article className="card-base post-card" key={item.slug}>
             <div className="post-card-body">
-              <Link className="post-title" href={`/diary/${item.slug}`}>{item.date}</Link>
+              <h2 className="post-title">{item.date}</h2>
               <div className="post-meta">
                 <span>日记</span>
                 <span>{item.path}</span>
