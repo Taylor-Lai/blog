@@ -22,32 +22,42 @@ export default function EssaysPage() {
   }, [router]);
 
   return (
-    <AppShell>
-      <div className="section-head">
-        <div>
-          <div className="hero-kicker">ESSAYS</div>
-          <h1 className="page-title">随笔</h1>
-          <p className="muted">那些比日记更长、也更愿意被整理的想法。</p>
+    <AppShell compact title="随笔">
+      <section className="card-base section-panel">
+        <div className="section-header">
+          <div>
+            <div className="hero-kicker">ESSAYS</div>
+            <h1 className="page-title">随笔</h1>
+            <p className="muted">有日期，也有标题，适合更完整地整理一段想法。</p>
+          </div>
+          <InlineUpload
+            module="essays"
+            label="上传随笔"
+            hint="文件名建议 YYYY-MM-DD-slug.md，front matter 里包含 title、date、slug。"
+            onUploaded={loadItems}
+          />
         </div>
-        <InlineUpload
-          module="essays"
-          label="上传随笔"
-          hint="随笔文件名建议是 YYYY-MM-DD-slug.md，并且 front matter 里需要 title、date、slug。"
-          onUploaded={loadItems}
-        />
-      </div>
-      <div className="list">
+      </section>
+
+      <section className="post-list-container">
         {items.map((item) => (
-          <Link className="list-item" href={`/essays/${item.slug}`} key={item.slug}>
-            <span className="muted">{item.date}</span>
-            <h2>{item.title}</h2>
-            {item.summary ? <p>{item.summary}</p> : null}
-            <div className="tags">
-              {item.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}
+          <article className="card-base post-card" key={item.slug}>
+            <div className="post-card-body">
+              <Link className="post-title" href={`/essays/${item.slug}`}>{item.title}</Link>
+              <div className="post-meta">
+                <span>随笔</span>
+                <span>{item.date}</span>
+              </div>
+              <p className="post-excerpt">{item.summary || "一段被认真放好的想法。"}</p>
+              <div className="chip-list">
+                {item.tags.map((tag) => <span className="tag" key={tag}># {tag}</span>)}
+              </div>
             </div>
-          </Link>
+            <Link href={`/essays/${item.slug}`} className="post-cover" aria-label={item.title || item.date} />
+            <Link href={`/essays/${item.slug}`} className="post-enter" aria-label={item.title || item.date}>›</Link>
+          </article>
         ))}
-      </div>
+      </section>
     </AppShell>
   );
 }

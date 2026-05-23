@@ -17,8 +17,9 @@ export default function DiaryDetailPage() {
   }, [params.date, router]);
 
   return (
-    <AppShell>
-      <article className="article">
+    <AppShell compact title={item?.date || "日记"}>
+      <article className="card-base article">
+        <div className="hero-kicker">DIARY</div>
         <h1>{item?.date || "日记"}</h1>
         {item ? <div dangerouslySetInnerHTML={{ __html: item.body_html }} /> : <p className="muted">加载中...</p>}
       </article>

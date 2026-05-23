@@ -26,9 +26,9 @@ export default function LoginPage() {
 
   return (
     <main className="login-shell">
-      <section className="login-panel">
+      <section className="card-base login-panel">
         <div className="brand">
-          <span className="brand-mark">J</span>
+          <span className="brand-mark">K</span>
           <span>卡的日记</span>
         </div>
         <h1 className="page-title">欢迎回来</h1>

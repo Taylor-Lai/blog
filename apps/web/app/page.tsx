@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
-import { apiFetch } from "@/lib/api";
+import { apiFetch, ContentItem } from "@/lib/api";
 
 type Module = {
   key: string;
@@ -15,53 +15,64 @@ type Module = {
 export default function HomePage() {
   const router = useRouter();
   const [modules, setModules] = useState<Module[]>([]);
+  const [latest, setLatest] = useState<ContentItem[]>([]);
 
   useEffect(() => {
-    apiFetch<Module[]>("/api/modules")
-      .then(setModules)
+    Promise.all([
+      apiFetch<Module[]>("/api/modules"),
+      apiFetch<ContentItem[]>("/api/diary").catch(() => []),
+      apiFetch<ContentItem[]>("/api/essays").catch(() => [])
+    ])
+      .then(([moduleList, diary, essays]) => {
+        setModules(moduleList);
+        setLatest([...diary.slice(0, 2), ...essays.slice(0, 2)].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4));
+      })
       .catch(() => router.push("/login"));
   }, [router]);
 
   return (
     <AppShell>
-      <section className="headertop filter-dot">
-        <figure id="centerbg" className="centerbg" />
-        <div className="focusinfo">
-          <div className="header-tou">
-            <span>記</span>
-          </div>
-          <h1 className="center-text">卡的日记</h1>
-          <div className="header-info">
-            <p>You are on your own kid. You always have been.</p>
-          </div>
-          <div className="top-social">
-            <Link href="/diary">Diary</Link>
-            <Link href="/essays">Essays</Link>
-            <Link href="/search">Search</Link>
-          </div>
-        </div>
-        <div className="headertop-bar" />
-        <div className="scroll-down">⌄</div>
+      <section className="card-base section-panel">
+        <div className="hero-kicker">PRIVATE JOURNAL</div>
+        <h1 className="page-title">卡的日记</h1>
+        <p className="muted">日记只按日期安放，随笔保留标题和更完整的想法。</p>
       </section>
 
-      <section className="blank">
-        <div className="notice-card">
-          <span>Announcement</span>
-          <p>把日记留给今天，把随笔留给更长的想法。这里是卡的私人小窝。</p>
-        </div>
-        <div className="post-list">
-          {modules.map((module, index) => (
-            <Link className="post-list-thumb" href={`/${module.key}`} key={module.key}>
-              <div className="post-thumb-image" data-index={index} />
-              <article className="post-thumb-content">
-                <div className="post-meta">Private · {String(index + 1).padStart(2, "0")}</div>
-                <h2>{module.name}</h2>
-                <p>{module.description}</p>
-              </article>
-            </Link>
-          ))}
-        </div>
+      <section className="post-list-container">
+        {modules.map((module) => (
+          <article className="card-base post-card" key={module.key}>
+            <div className="post-card-body">
+              <Link href={`/${module.key}`} className="post-title">
+                {module.name}
+              </Link>
+              <div className="post-meta">
+                <span>Private</span>
+                <span>{module.key === "diary" ? "按日期归档" : "标题与日期"}</span>
+              </div>
+              <p className="post-excerpt">{module.description}</p>
+              <div className="chip-list">
+                <span className="chip">Markdown</span>
+                <span className="chip">Git 同步</span>
+              </div>
+            </div>
+            <Link href={`/${module.key}`} className="post-cover" aria-label={`进入${module.name}`} />
+            <Link href={`/${module.key}`} className="post-enter" aria-label={`进入${module.name}`}>›</Link>
+          </article>
+        ))}
       </section>
+
+      {latest.length > 0 ? (
+        <section className="card-base section-panel">
+          <h2 className="panel-title">最近</h2>
+          <div className="post-list-container">
+            {latest.map((item) => (
+              <Link className="chip" href={item.module === "diary" ? `/diary/${item.slug}` : `/essays/${item.slug}`} key={`${item.module}-${item.slug}`}>
+                {item.module === "diary" ? item.date : `${item.date} · ${item.title}`}
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </AppShell>
   );
 }

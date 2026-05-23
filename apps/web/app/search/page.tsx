@@ -27,24 +27,35 @@ export default function SearchPage() {
   }
 
   return (
-    <AppShell>
-      <div className="hero-kicker">SEARCH</div>
-      <h1 className="page-title">找回某个片刻</h1>
-      <p className="muted">搜索标题、摘要和正文，至少输入两个字符。</p>
-      <form className="form" onSubmit={submit}>
-        <input value={q} onChange={(event) => setQ(event.target.value)} placeholder="输入至少两个字符" />
-        <button className="button" type="submit">搜索</button>
-      </form>
-      {error ? <p className="error">{error}</p> : null}
-      <div className="list">
+    <AppShell compact title="搜索">
+      <section className="card-base section-panel search-panel">
+        <div className="hero-kicker">SEARCH</div>
+        <h1 className="page-title">找回某个片刻</h1>
+        <p className="muted">搜索标题、摘要和正文，至少输入两个字符。</p>
+        <form className="form" onSubmit={submit}>
+          <input value={q} onChange={(event) => setQ(event.target.value)} placeholder="输入至少两个字符" />
+          <button className="button" type="submit">搜索</button>
+        </form>
+        {error ? <p className="error">{error}</p> : null}
+      </section>
+
+      <section className="post-list-container">
         {items.map((item) => (
-          <Link className="list-item" href={item.module === "diary" ? `/diary/${item.slug}` : `/essays/${item.slug}`} key={`${item.module}-${item.slug}`}>
-            <span className="muted">{item.module === "diary" ? "日记" : "随笔"} · {item.date}</span>
-            <h2>{item.title || item.date}</h2>
-            {item.summary ? <p>{item.summary}</p> : null}
-          </Link>
+          <article className="card-base post-card" key={`${item.module}-${item.slug}`}>
+            <div className="post-card-body">
+              <Link className="post-title" href={item.module === "diary" ? `/diary/${item.slug}` : `/essays/${item.slug}`}>
+                {item.title || item.date}
+              </Link>
+              <div className="post-meta">
+                <span>{item.module === "diary" ? "日记" : "随笔"}</span>
+                <span>{item.date}</span>
+              </div>
+              {item.summary ? <p className="post-excerpt">{item.summary}</p> : null}
+            </div>
+            <Link className="post-enter" href={item.module === "diary" ? `/diary/${item.slug}` : `/essays/${item.slug}`}>›</Link>
+          </article>
         ))}
-      </div>
+      </section>
     </AppShell>
   );
 }

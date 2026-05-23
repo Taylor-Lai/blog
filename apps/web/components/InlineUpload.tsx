@@ -36,7 +36,7 @@ export function InlineUpload({ module, label, hint, onUploaded }: InlineUploadPr
         method: "POST",
         body
       });
-      setMessage(result.commit ? `上传成功，commit: ${result.commit}` : "上传成功，内容已刷新");
+      setMessage(result.commit ? `上传成功，已提交 ${result.commit}` : "上传成功，内容已刷新");
       setFile(null);
       onUploaded?.();
     } catch (err) {
@@ -51,7 +51,7 @@ export function InlineUpload({ module, label, hint, onUploaded }: InlineUploadPr
   return (
     <section className="upload-inline">
       <button className="pill" type="button" onClick={() => setOpen((value) => !value)}>
-        {open ? "收起上传" : label}
+        {open ? "收起" : label}
       </button>
       {open ? (
         <form className="upload-panel" onSubmit={submit}>
