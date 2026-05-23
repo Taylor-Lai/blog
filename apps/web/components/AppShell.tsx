@@ -24,10 +24,15 @@ export function AppShell({ children, title = "卡的日记", subtitle = "You are
   const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
   const [today, setToday] = useState<{ day: number; label: string } | null>(null);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
     const update = () => setScrolled(window.scrollY > 48);
     update();
+    const savedTheme = window.localStorage.getItem("blog-theme");
+    if (savedTheme === "dark" || savedTheme === "light") {
+      setTheme(savedTheme);
+    }
     const now = new Date();
     setToday({
       day: now.getDate(),
@@ -37,13 +42,21 @@ export function AppShell({ children, title = "卡的日记", subtitle = "You are
     return () => window.removeEventListener("scroll", update);
   }, []);
 
+  function toggleTheme() {
+    setTheme((current) => {
+      const next = current === "dark" ? "light" : "dark";
+      window.localStorage.setItem("blog-theme", next);
+      return next;
+    });
+  }
+
   async function logout() {
     await apiFetch("/api/auth/logout", { method: "POST" }).catch(() => null);
     router.push("/login");
   }
 
   return (
-    <div className={`mizuki-shell wallpaper-transparent enable-card-border ${compact ? "is-compact" : ""}`}>
+    <div className={`mizuki-shell wallpaper-transparent enable-card-border theme-${theme} ${compact ? "is-compact" : ""}`}>
       <div className="top-gradient-highlight" />
       <header id="navbar" className={scrolled || compact ? "scrolled" : ""} data-transparent-mode="semifull">
         <div className="navbar-inner">
@@ -62,7 +75,9 @@ export function AppShell({ children, title = "卡的日记", subtitle = "You are
             })}
           </nav>
           <div className="navbar-actions">
-            <button className="icon-btn" aria-label="切换显示设置" type="button">◐</button>
+            <button className="icon-btn" aria-label={theme === "dark" ? "切换到白天模式" : "切换到黑夜模式"} type="button" onClick={toggleTheme}>
+              {theme === "dark" ? "☀" : "◐"}
+            </button>
             <button className="icon-btn" aria-label="退出登录" type="button" onClick={logout}>↗</button>
           </div>
         </div>
@@ -116,7 +131,7 @@ function Banner({ title, subtitle }: { title: string; subtitle: string }) {
   return (
     <section id="banner-wrapper" className="banner-wrapper">
       <div id="banner-carousel" className="banner-carousel">
-        <img className="banner-image banner-image-a" src="/assets/banner/desktop-1.webp" alt="" />
+        <img className="banner-image banner-image-a" src="/assets/banner/test.jpg" alt="" />
         <img className="banner-image banner-image-b" src="/assets/banner/desktop-2.webp" alt="" />
         <img className="banner-image banner-image-c" src="/assets/banner/desktop-3.webp" alt="" />
         <img className="banner-image banner-image-d" src="/assets/banner/desktop-4.webp" alt="" />

@@ -48,9 +48,7 @@ body {
   margin: 0;
   min-height: 100vh;
   color: rgba(0, 0, 0, 0.9);
-  background:
-    linear-gradient(180deg, rgba(245, 247, 252, 0.84), rgba(245, 247, 252, 0.98)),
-    var(--page-bg);
+  background: var(--page-bg);
   font-family: "ZenMaruGothic-Medium", "Noto Sans SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
 }
 
@@ -75,6 +73,29 @@ button {
   min-height: 100vh;
   position: relative;
   overflow-x: clip;
+  background:
+    linear-gradient(180deg, rgba(245, 247, 252, 0.8), rgba(245, 247, 252, 0.98)),
+    var(--page-bg);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.theme-dark {
+  --primary: oklch(0.76 0.13 var(--hue));
+  --page-bg: oklch(0.16 0.014 var(--hue));
+  --card-bg: oklch(0.23 0.015 var(--hue));
+  --card-bg-transparent: rgba(26, 28, 34, 0.82);
+  --btn-content: oklch(0.78 0.1 var(--hue));
+  --btn-regular-bg: oklch(0.31 0.035 var(--hue));
+  --btn-regular-bg-hover: oklch(0.37 0.04 var(--hue));
+  --btn-regular-bg-active: oklch(0.43 0.045 var(--hue));
+  --btn-plain-bg-hover: oklch(0.3 0.035 var(--hue));
+  --btn-plain-bg-active: oklch(0.27 0.025 var(--hue));
+  --line-divider: rgba(255, 255, 255, 0.1);
+  --shadow-card: 0 20px 52px rgba(0, 0, 0, 0.28);
+  color: rgba(255, 255, 255, 0.9);
+  background:
+    linear-gradient(180deg, rgba(18, 20, 26, 0.75), rgba(18, 20, 26, 0.98)),
+    var(--page-bg);
 }
 
 .top-gradient-highlight {
@@ -84,6 +105,10 @@ button {
   z-index: 20;
   pointer-events: none;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0.52), rgba(255, 255, 255, 0.16), transparent);
+}
+
+.theme-dark .top-gradient-highlight {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.12), transparent);
 }
 
 #navbar {
@@ -142,6 +167,12 @@ button {
   text-shadow: none;
 }
 
+.theme-dark #navbar.scrolled .navbar-title,
+.theme-dark #navbar:hover .navbar-title,
+.theme-dark.is-compact .navbar-title {
+  color: rgba(255, 255, 255, 0.88);
+}
+
 .navbar-title:hover,
 .btn-plain:hover,
 .icon-btn:hover {
@@ -189,6 +220,17 @@ button {
   font-weight: 650;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
   transition: all 0.18s ease;
+  outline: none;
+}
+
+.icon-btn {
+  font-size: 1.05rem;
+}
+
+.icon-btn:focus-visible,
+.navbar-links a:focus-visible,
+.navbar-title:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--primary), transparent 72%);
 }
 
 #navbar.scrolled .navbar-links a,
@@ -199,6 +241,15 @@ button {
 .is-compact .icon-btn {
   color: rgba(0, 0, 0, 0.72);
   text-shadow: none;
+}
+
+.theme-dark #navbar.scrolled .navbar-links a,
+.theme-dark #navbar:hover .navbar-links a,
+.theme-dark #navbar.scrolled .icon-btn,
+.theme-dark #navbar:hover .icon-btn,
+.theme-dark.is-compact .navbar-links a,
+.theme-dark.is-compact .icon-btn {
+  color: rgba(255, 255, 255, 0.76);
 }
 
 .navbar-links a:hover,
@@ -216,8 +267,8 @@ button {
 
 .banner-wrapper {
   position: relative;
-  height: 65vh;
-  min-height: 520px;
+  height: 76vh;
+  min-height: 620px;
   overflow: hidden;
 }
 
@@ -234,8 +285,8 @@ button {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 45%, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.34)),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.38));
+    radial-gradient(circle at 50% 45%, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.28)),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.16), rgba(0, 0, 0, 0.32));
 }
 
 .banner-image {
@@ -245,7 +296,7 @@ button {
 
 .banner-image-b {
   opacity: 0;
-  animation: bannerCrossfade 18s ease-in-out infinite, bannerKenBurns 18s ease-out infinite alternate;
+  animation: bannerCrossfade 28s ease-in-out infinite, bannerKenBurns 28s ease-out infinite alternate;
 }
 
 .banner-image-c,
@@ -254,11 +305,11 @@ button {
 }
 
 .banner-image-c {
-  animation: bannerCrossfadeC 24s ease-in-out infinite, bannerKenBurns 24s ease-out infinite alternate;
+  animation: bannerCrossfadeC 28s ease-in-out infinite, bannerKenBurns 28s ease-out infinite alternate;
 }
 
 .banner-image-d {
-  animation: bannerCrossfadeD 30s ease-in-out infinite, bannerKenBurns 30s ease-out infinite alternate;
+  animation: bannerCrossfadeD 28s ease-in-out infinite, bannerKenBurns 28s ease-out infinite alternate;
 }
 
 .banner-text-overlay {
@@ -274,7 +325,7 @@ button {
 .banner-title {
   margin: 0 0 1rem;
   color: white;
-  font-size: clamp(3rem, 8vw, 6.8rem);
+  font-size: clamp(3rem, 6.2vw, 5.6rem);
   line-height: 1;
   font-weight: 900;
   font-family: "Loli", "ZenMaruGothic-Medium", "Noto Sans SC", sans-serif;
@@ -340,7 +391,7 @@ button {
 .main-stage {
   position: relative;
   z-index: 30;
-  margin-top: -26vh;
+  margin-top: -3.5rem;
   padding: 0 1rem 4rem;
   pointer-events: none;
 }
@@ -447,6 +498,14 @@ button {
   margin: 0;
   color: rgba(0, 0, 0, 0.5);
   line-height: 1.75;
+}
+
+.theme-dark .profile-card p,
+.theme-dark .widget-card p,
+.theme-dark .muted,
+.theme-dark .post-meta,
+.theme-dark .mini-calendar span {
+  color: rgba(255, 255, 255, 0.56);
 }
 
 .profile-actions {
@@ -571,6 +630,15 @@ button {
   line-height: 1.25;
 }
 
+.theme-dark .post-title,
+.theme-dark .page-title,
+.theme-dark .panel-title,
+.theme-dark .widget-card h3,
+.theme-dark .profile-card h2,
+.theme-dark .article h1 {
+  color: rgba(255, 255, 255, 0.92);
+}
+
 .post-title:hover {
   color: var(--primary);
 }
@@ -589,6 +657,10 @@ button {
   margin: 0 0 1rem;
   color: rgba(0, 0, 0, 0.62);
   line-height: 1.8;
+}
+
+.theme-dark .post-excerpt {
+  color: rgba(255, 255, 255, 0.68);
 }
 
 .post-enter {
@@ -617,13 +689,13 @@ button {
   min-height: 10rem;
   background:
     linear-gradient(135deg, rgba(92, 101, 180, 0.12), rgba(255, 255, 255, 0.3)),
-    url("/assets/banner/desktop-2.webp") center/cover;
+    url("/assets/banner/test.jpg") center/cover;
 }
 
 .post-card:nth-child(2n) .post-cover {
   background:
     linear-gradient(135deg, rgba(92, 101, 180, 0.12), rgba(255, 255, 255, 0.25)),
-    url("/assets/banner/desktop-1.webp") center/cover;
+    url("/assets/banner/desktop-2.webp") center/cover;
 }
 
 .post-card:nth-child(3n) .post-cover {
@@ -752,7 +824,7 @@ button {
   padding: 1.5rem;
   background:
     linear-gradient(rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.38)),
-    url("/assets/banner/desktop-1.webp") center/cover;
+    url("/assets/banner/test.jpg") center/cover;
 }
 
 .login-panel {
@@ -794,34 +866,34 @@ button {
 }
 
 @keyframes bannerCrossfade {
-  0%, 38% {
+  0%, 22% {
     opacity: 0;
   }
-  50%, 88% {
+  27%, 45% {
     opacity: 1;
   }
-  100% {
+  50%, 100% {
     opacity: 0;
   }
 }
 
 @keyframes bannerCrossfadeC {
-  0%, 45% {
+  0%, 47% {
     opacity: 0;
   }
-  56%, 70% {
+  52%, 70% {
     opacity: 1;
   }
-  82%, 100% {
+  75%, 100% {
     opacity: 0;
   }
 }
 
 @keyframes bannerCrossfadeD {
-  0%, 64% {
+  0%, 72% {
     opacity: 0;
   }
-  74%, 88% {
+  77%, 94% {
     opacity: 1;
   }
   100% {
@@ -913,12 +985,12 @@ button {
   }
 
   .banner-wrapper {
-    height: 72vh;
-    min-height: 480px;
+    height: 74vh;
+    min-height: 520px;
   }
 
   .main-stage {
-    margin-top: -18vh;
+    margin-top: -2rem;
     padding-inline: 0.65rem;
   }
 
